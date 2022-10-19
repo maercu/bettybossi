@@ -1,0 +1,12 @@
+global:
+  sendAnonymousUsage: false
+log:
+  level: debug
+api:
+  insecure: true
+  dashboard: true
+providers:
+  docker: {}
+entryPoints:
+  main:
+    address: :8484

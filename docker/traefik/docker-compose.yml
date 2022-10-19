@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  rproxy:
+    image: traefik:v2.9
+    ports:
+      - 8484:8484
+      - 8080:8080
+    volumes:
+      - ./traefik.yml:/etc/traefik/traefik.yml
+      - /var/run/docker.sock:/var/run/docker.sock
+  
+  frontend:
+    image: nginx:1.22-alpine
+    volumes:
+      - ./fe:/usr/share/nginx/html
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.fe0.entrypoints=main
+      - traefik.http.routers.fe0.rule=PathPrefix(`/`)
+  
+  backend:
+    image: nginx:1.22-alpine
+    volumes:
+      - ./be:/usr/share/nginx/html
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.be0.entrypoints=main
+      - traefik.http.routers.be0.rule=PathPrefix(`/backend`)
+      - traefik.http.middlewares.stripbackend.stripprefix.prefixes=/backend
+      - traefik.http.routers.be0.middlewares=stripbackend@docker
+      
