@@ -1,9 +1,12 @@
 localhost {
-    # tls /etc/ssl/mycert-chain.pem /etc/ssl/mykey.pem
     
+    # tls /etc/ssl/mycert-chain.pem /etc/ssl/mykey.pem
+    basicauth * {
+        # docker run caddy caddy hash-password --plaintext asupersecret
+        netops $2a$14$tEOqjpYUYMa.Zaj.XcMxTOB/HIcUkg87uZ6nwk9RpKXvHWloUeDJO
+    }
     reverse_proxy web:80
     handle_path /api* {
         reverse_proxy api:80
     }
 }
-
