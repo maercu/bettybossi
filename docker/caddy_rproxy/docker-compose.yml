@@ -10,4 +10,4 @@ services:
     build:
       context: caddy/
     ports: 
-      - 7777:443
+      - 7088:443
